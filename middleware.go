@@ -96,7 +96,6 @@ func GinLogger(log *logrus.Logger) gin.HandlerFunc {
 			msg := fmt.Sprintf("[%s - %s] %d", c.Request.Method, path, statusCode)
 			if statusCode > 399 {
 				entry.Error(msg)
-				entry.Warn(msg)
 			} else {
 				entry.Info(msg)
 			}

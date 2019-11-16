@@ -14,7 +14,7 @@ func main() {
 
 	formatter := stackdriver.NewFormatter(
 		stackdriver.WithService("Example"),
-		stackdriver.WithService("0.0.1"),
+		stackdriver.WithVersion("0.0.1"),
 		stackdriver.WithProjectID("ak-app-01"),
 	)
 	logger.SetFormatter(formatter)
