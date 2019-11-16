@@ -65,7 +65,7 @@ func GinLogger(log *logrus.Logger) gin.HandlerFunc {
 		clientUserAgent := c.Request.UserAgent()
 		referer := c.Request.Referer()
 		requestS := c.Request.ContentLength
-		responseS := c.Request.Response.ContentLength
+		responseS := c.Writer.Size()
 		if requestS < 0 {
 			requestS = 0
 		}
@@ -75,7 +75,7 @@ func GinLogger(log *logrus.Logger) gin.HandlerFunc {
 			RemoteIP:      clientIP,
 			Referer:       referer,
 			UserAgent:     clientUserAgent,
-			ResponseSize:  strconv.FormatInt(responseS, 10),
+			ResponseSize:  strconv.Itoa(responseS),
 			Latency:       strconv.Itoa(latency),
 			Status:        strconv.Itoa(statusCode),
 			RequestSize:   strconv.FormatInt(requestS, 10),
@@ -88,6 +88,18 @@ func GinLogger(log *logrus.Logger) gin.HandlerFunc {
 			fields["trace"] = traceHeader
 		}
 
-		log.WithFields(fields).Info("Completed request")
+		entry := log.WithFields(fields)
+
+		if len(c.Errors) > 0 {
+			entry.Error(c.Errors.ByType(gin.ErrorTypePrivate).String())
+		} else {
+			msg := fmt.Sprintf("[%s - %s] %d", c.Request.Method, path, statusCode)
+			if statusCode > 399 {
+				entry.Error(msg)
+				entry.Warn(msg)
+			} else {
+				entry.Info(msg)
+			}
+		}
 	}
 }
