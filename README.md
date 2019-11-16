@@ -1,5 +1,11 @@
 # logrus-stackdriver-formatter
 
+NOTE: This is mostly a copy of
+https://github.com/icco/logrus-stackdriver-formatter since GitHub doesn't allow
+"forks of forks".
+
+The only addition in this repo is the Gin middleware.
+
 [![Build Status](https://travis-ci.org/TV4/logrus-stackdriver-formatter.svg?branch=master)](https://travis-ci.org/TV4/logrus-stackdriver-formatter)
 [![Go Report Card](https://goreportcard.com/badge/github.com/TV4/logrus-stackdriver-formatter)](https://goreportcard.com/report/github.com/TV4/logrus-stackdriver-formatter)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/TV4/logrus-stackdriver-formatter)
@@ -29,7 +35,7 @@ var log = logrus.New()
 
 func init() {
     log.Formatter = stackdriver.NewFormatter(
-        stackdriver.WithService("your-service"), 
+        stackdriver.WithService("your-service"),
         stackdriver.WithVersion("v0.1.0"),
     )
     log.Level = logrus.DebugLevel
