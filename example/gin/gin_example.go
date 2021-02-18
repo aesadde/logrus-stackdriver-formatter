@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	logrus_stack "github.com/Gurpartap/logrus-stack"
 	stackdriver "github.com/aesadde/logrus-stackdriver-formatter"
 	"github.com/gin-gonic/gin"
@@ -34,6 +36,13 @@ func main() {
 		u, _ := uuid.NewV4()
 		c.Header("X-Request-ID", u.String())
 		c.JSON(200, "pong")
+	})
+
+	router.GET("/test-err", func(c *gin.Context) {
+		u, _ := uuid.NewV4()
+		c.Header("X-Request-ID", u.String())
+		c.Error(fmt.Errorf("This is a test error - Should be logged"))
+		c.JSON(500, "pong")
 	})
 
 	router.Run(":5000")

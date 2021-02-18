@@ -267,6 +267,7 @@ func (f *Formatter) Format(e *logrus.Entry) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(string(b))
 
 	return append(b, '\n'), nil
 }
